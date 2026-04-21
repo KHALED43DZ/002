@@ -73,41 +73,45 @@
                     ⚠️ اضغط على الروابط أدناه للحصول على كل مفتاح
                 </div>
 
-                <!-- OpenAI -->
+                <!-- مفتاح السكريبت -->
                 <div class="form-group">
                     <label>
-                        🧠 OpenAI Key
-                        <span class="paid-badge">$5 مجاني</span>
+                        🧠 مفتاح السكريبت
+                        <span class="free-badge">مجاني</span>
                     </label>
-                    <input type="password" id="key-openai" placeholder="sk-...">
-                    <a href="https://platform.openai.com/api-keys" target="_blank" class="key-link">
-                        🔗 platform.openai.com/api-keys
+                    <select id="script-provider" style="margin-bottom:8px" onchange="updateScriptHint()">
+                        <option value="gemini" selected>Google Gemini (مجاني - AIza...)</option>
+                        <option value="openai">OpenAI (sk-... - $5 مجاني)</option>
+                    </select>
+                    <input type="password" id="key-script" placeholder="AIzaSy...">
+                    <a href="https://aistudio.google.com/app/apikey" target="_blank" class="key-link" id="script-link">
+                        🔗 aistudio.google.com/app/apikey
                     </a>
-                    <div style="font-size:.75rem;color:#666;margin-top:4px">
-                        سجّل دخول ← API Keys ← Create new secret key
+                    <div style="font-size:.75rem;color:#666;margin-top:4px" id="script-hint">
+                        ✅ <strong>مجاني تماماً</strong> - سجّل دخول Google ← Create API Key
                     </div>
                 </div>
 
-                <!-- Images -->
+                <!-- مفتاح الصور -->
                 <div class="form-group">
                     <label>
                         🎨 مفتاح الصور
                         <span class="free-badge">مجاني</span>
                     </label>
-                    <select id="image-provider" style="margin-bottom:8px">
-                        <option value="pollinations">Pollinations.ai (مجاني - لا يحتاج مفتاح)</option>
-                        <option value="fal">Fal.ai (free tier - يحتاج مفتاح)</option>
+                    <select id="image-provider" style="margin-bottom:8px" onchange="updateImageHint()">
+                        <option value="pollinations" selected>Pollinations.ai (لا يحتاج مفتاح)</option>
+                        <option value="fal">Fal.ai (free tier - fal-...)</option>
                     </select>
-                    <input type="password" id="key-image" placeholder="اتركه فارغاً للـ Pollinations">
-                    <a href="https://fal.ai/dashboard/keys" target="_blank" class="key-link" id="image-link">
-                        🔗 fal.ai/dashboard/keys
+                    <input type="password" id="key-image" placeholder="لا يحتاج مفتاح" disabled style="opacity:0.5">
+                    <a href="https://pollinations.ai" target="_blank" class="key-link" id="image-link">
+                        🔗 pollinations.ai (لا يحتاج تسجيل!)
                     </a>
                     <div style="font-size:.75rem;color:#666;margin-top:4px" id="image-hint">
-                        ✅ Pollinations مجاني تماماً - اتركه فارغاً
+                        ✅ مجاني تماماً - اتركه فارغاً
                     </div>
                 </div>
 
-                <!-- Voice -->
+                <!-- مفتاح الصوت -->
                 <div class="form-group">
                     <label>
                         🎙️ ElevenLabs (اختياري)
@@ -127,8 +131,18 @@
 
             <div class="card">
                 <h2 class="card-title">🧪 اختبار المفاتيح</h2>
-                <button class="btn btn-small" onclick="testOpenAI()" style="background:#e6fffa;color:#234e52">🧠 اختبر OpenAI</button>
+                <button class="btn btn-small" onclick="testScriptKey()" style="background:#e6fffa;color:#234e52">🧠 اختبر السكريبت</button>
                 <div id="test-result" style="margin-top:10px"></div>
+            </div>
+
+            <div class="card">
+                <h2 class="card-title">📋 صيغ المفاتيح الصحيحة</h2>
+                <div style="line-height:2;font-size:.85rem;color:#555">
+                    <p><strong>Google Gemini:</strong> يبدأ بـ <code style="background:#edf2f7;padding:2px 6px;border-radius:4px">AIzaSy...</code></p>
+                    <p><strong>OpenAI:</strong> يبدأ بـ <code style="background:#edf2f7;padding:2px 6px;border-radius:4px">sk-...</code></p>
+                    <p><strong>Fal.ai:</strong> يبدأ بـ <code style="background:#edf2f7;padding:2px 6px;border-radius:4px">fal-...</code></p>
+                    <p><strong>ElevenLabs:</strong> أي نص طويل</p>
+                </div>
             </div>
         </div>
 
@@ -209,13 +223,10 @@
                 <div style="line-height:2;font-size:.9rem;color:#555">
                     <p><strong>❌ "Cannot read properties of undefined"</strong></p>
                     <p>← المفتاح خاطئ أو منتهي</p>
-                    <p>← اذهب لـ openai.com وتحقق من الرصيد</p>
+                    <p>← تأكد من الصيغة: <code>AIzaSy...</code> للـ Gemini</p>
                     
                     <p style="margin-top:12px"><strong>❌ "لا يوجد مشاهد"</strong></p>
-                    <p>← السكريبت لم يُولد بسبب خطأ OpenAI</p>
-                    
-                    <p style="margin-top:12px"><strong>❌ الصور لا تظهر</strong></p>
-                    <p>← جرب Pollinations (لا يحتاج مفتاح)</p>
+                    <p>← السكريبت لم يُولد بسبب خطأ في المفتاح</p>
                 </div>
             </div>
         </div>
@@ -236,9 +247,29 @@
             btn.classList.add('active');
         }
 
-        // ===== تحديث رابط الصور =====
-        document.getElementById('image-provider').addEventListener('change',function(){
-            const provider = this.value;
+        // ===== تحديث تلميح السكريبت =====
+        function updateScriptHint(){
+            const provider = document.getElementById('script-provider').value;
+            const link = document.getElementById('script-link');
+            const hint = document.getElementById('script-hint');
+            const input = document.getElementById('key-script');
+            
+            if(provider === 'gemini'){
+                link.href = 'https://aistudio.google.com/app/apikey';
+                link.textContent = '🔗 aistudio.google.com/app/apikey';
+                hint.innerHTML = '✅ <strong>مجاني تماماً</strong> - لا يحتاج بطاقة بنك!';
+                input.placeholder = 'AIzaSy...';
+            } else {
+                link.href = 'https://platform.openai.com/api-keys';
+                link.textContent = '🔗 platform.openai.com/api-keys';
+                hint.innerHTML = '💳 يحتاج بطاقة بنك (يتم خصم $5)';
+                input.placeholder = 'sk-...';
+            }
+        }
+
+        // ===== تحديث تلميح الصور =====
+        function updateImageHint(){
+            const provider = document.getElementById('image-provider').value;
             const link = document.getElementById('image-link');
             const hint = document.getElementById('image-hint');
             const input = document.getElementById('key-image');
@@ -246,7 +277,7 @@
             if(provider === 'pollinations'){
                 link.href = 'https://pollinations.ai';
                 link.textContent = '🔗 pollinations.ai (لا يحتاج تسجيل!)';
-                hint.innerHTML = '✅ <strong>مجاني تماماً</strong> - لا يحتاج مفتاح، اتركه فارغاً';
+                hint.innerHTML = '✅ <strong>مجاني تماماً</strong> - لا يحتاج مفتاح!';
                 input.placeholder = 'لا يحتاج مفتاح';
                 input.disabled = true;
                 input.style.opacity = '0.5';
@@ -259,15 +290,16 @@
                 input.disabled = false;
                 input.style.opacity = '1';
             }
-        });
+        }
 
         // ===== حفظ/تحميل =====
         function saveKeys(){
             const keys = {
-                openai: document.getElementById('key-openai').value.trim(),
+                script: document.getElementById('key-script').value.trim(),
+                scriptProvider: document.getElementById('script-provider').value,
                 image: document.getElementById('key-image').value.trim(),
-                voice: document.getElementById('key-voice').value.trim(),
-                imageProvider: document.getElementById('image-provider').value
+                imageProvider: document.getElementById('image-provider').value,
+                voice: document.getElementById('key-voice').value.trim()
             };
             localStorage.setItem('studio_keys', JSON.stringify(keys));
             showToast('✅ تم حفظ المفاتيح!');
@@ -277,299 +309,53 @@
             const saved = localStorage.getItem('studio_keys');
             if(saved){
                 const k = JSON.parse(saved);
-                document.getElementById('key-openai').value = k.openai||'';
-                document.getElementById('key-image').value = k.image||'';
-                document.getElementById('key-voice').value = k.voice||'';
+                document.getElementById('key-script').value = k.script || '';
+                if(k.scriptProvider){
+                    document.getElementById('script-provider').value = k.scriptProvider;
+                    updateScriptHint();
+                }
+                document.getElementById('key-image').value = k.image || '';
                 if(k.imageProvider){
                     document.getElementById('image-provider').value = k.imageProvider;
-                    document.getElementById('image-provider').dispatchEvent(new Event('change'));
+                    updateImageHint();
                 }
+                document.getElementById('key-voice').value = k.voice || '';
             }
         });
 
         // ===== Toast =====
         function showToast(msg,error){
             const t = document.getElementById('toast');
-            document.getElementById('toast-icon').textContent = error?'❌':'✅';
+            document.getElementById('toast-icon').textContent = error ? '❌' : '✅';
             document.getElementById('toast-message').textContent = msg;
-            t.className = 'toast '+(error?'error':'')+' show';
-            setTimeout(()=>t.classList.remove('show'),3000);
+            t.className = 'toast ' + (error ? 'error' : '') + ' show';
+            setTimeout(() => t.classList.remove('show'), 3000);
         }
 
-        // ===== اختبار OpenAI =====
-        async function testOpenAI(){
-            const key = document.getElementById('key-openai').value.trim();
-            if(!key){showToast('🔐 أدخل المفتاح أولاً!',true);return;}
+        // ===== اختبار مفتاح السكريبت =====
+        async function testScriptKey(){
+            const key = document.getElementById('key-script').value.trim();
+            const provider = document.getElementById('script-provider').value;
+            
+            if(!key){
+                showToast('🔐 أدخل المفتاح أولاً!', true);
+                return;
+            }
+
+            // ✅ التحقق من الصيغة
+            if(provider === 'gemini' && !key.startsWith('AIza')){
+                showToast('❌ مفتاح Gemini يجب أن يبدأ بـ AIzaSy...', true);
+                return;
+            }
+            if(provider === 'openai' && !key.startsWith('sk-')){
+                showToast('❌ مفتاح OpenAI يجب أن يبدأ بـ sk-...', true);
+                return;
+            }
 
             const resultDiv = document.getElementById('test-result');
             resultDiv.innerHTML = '<div style="color:#667eea">⏳ جاري الاختبار...</div>';
 
             try{
-                const res = await fetch('https://api.openai.com/v1/chat/completions',{
-                    method:'POST',
-                    headers:{
-                        'Authorization':'Bearer '+key,
-                        'Content-Type':'application/json'
-                    },
-                    body:JSON.stringify({
-                        model:'gpt-4o-mini',
-                        messages:[{role:'user',content:'Say "API works"'}],
-                        max_tokens:10
-                    })
-                });
-
-                const data = await res.json();
+                let testContent;
                 
-                if(!res.ok){
-                    // خطأ من OpenAI
-                    const errorMsg = data.error?.message || data.error?.type || 'Unknown error';
-                    resultDiv.innerHTML = `
-                        <div class="error-detail">
-❌ خطأ من OpenAI:
-الحالة: ${res.status}
-النوع: ${data.error?.type||'unknown'}
-الرسالة: ${errorMsg}
-
-💡 الحلول:
-• تحقق من المفتاح (sk-...)
-• تأكد من وجود رصيد في openai.com
-• جرب إنشاء مفتاح جديد
-                        </div>
-                    `;
-                    showToast('❌ فشل الاختبار: '+errorMsg,true);
-                    return;
-                }
-
-                // نجح!
-                const content = data.choices?.[0]?.message?.content || 'No content';
-                resultDiv.innerHTML = `
-                    <div class="info-box">
-✅ نجح الاختبار!
-الرد: "${content}"
-
-مفتاحك يعمل! يمكنك البدء في التوليد.
-                    </div>
-                `;
-                showToast('✅ المفتاح يعمل!');
-
-            }catch(err){
-                resultDiv.innerHTML = `
-                    <div class="error-detail">
-❌ خطأ في الاتصال:
-${err.message}
-
-💡 تأكد من:
-• الإنترنت يعمل
-• المفتاح يبدأ بـ sk-
-• لا يوجد مسافات في المفتاح
-                    </div>
-                `;
-                showToast('❌ خطأ اتصال: '+err.message,true);
-            }
-        }
-
-        // ===== نسخ =====
-        function copyScript(){
-            const text = document.getElementById('script-text').textContent;
-            navigator.clipboard.writeText(text).then(()=>showToast('📋 تم النسخ!'));
-        }
-
-        // ===== توليد الكل =====
-        async function generateAll(){
-            const idea = document.getElementById('video-idea').value.trim();
-            if(!idea){showToast('✏️ أدخل فكرة!',true);return;}
-
-            const keys = JSON.parse(localStorage.getItem('studio_keys')||'{}');
-            if(!keys.openai){showToast('🔐 أدخل مفتاح OpenAI!',true);return;}
-
-            const btn = document.getElementById('generate-btn');
-            btn.disabled = true;
-            btn.innerHTML = '<span class="spinner"></span> جاري...';
-
-            document.getElementById('progress-section').classList.remove('hidden');
-            document.getElementById('results-section').classList.add('hidden');
-            document.getElementById('steps-container').innerHTML = '';
-
-            const steps = [
-                {id:'step-script',name:'📝 السكريبت (OpenAI)',fn:()=>generateScript(idea,keys.openai)},
-                {id:'step-images',name:'🎨 الصور ('+(keys.imageProvider||'pollinations')+')',fn:()=>generateImages(keys.image,keys.imageProvider||'pollinations')},
-                {id:'step-voice',name:'🎙️ الصوت',fn:()=>generateVoice(keys.voice)}
-            ];
-
-            let progress = 0;
-            for(const step of steps){
-                const div = document.createElement('div');
-                div.className = 'step-box';
-                div.id = step.id;
-                div.innerHTML = `<strong>${step.name}</strong><div style="font-size:.8rem;color:#666">جاري...</div>`;
-                document.getElementById('steps-container').appendChild(div);
-
-                progress += 30;
-                document.getElementById('progress-fill').style.width = progress+'%';
-
-                try{
-                    await step.fn();
-                    div.classList.add('done');
-                    div.querySelector('div').textContent = '✅ تم';
-                }catch(err){
-                    div.classList.add('error');
-                    div.querySelector('div').textContent = '❌ '+err.message;
-                    
-                    // تفاصيل الخطأ
-                    const detail = document.createElement('div');
-                    detail.className = 'error-detail';
-                    detail.textContent = err.detail || err.message;
-                    div.appendChild(detail);
-                    
-                    showToast('❌ '+step.name+': '+err.message,true);
-                }
-            }
-
-            document.getElementById('progress-fill').style.width = '100%';
-            document.getElementById('results-section').classList.remove('hidden');
-            btn.disabled = false;
-            btn.innerHTML = '🚀 ولّد جديد';
-            showToast('🎉 انزل لترى النتائج!');
-        }
-
-        // ===== توليد السكريبت (مُصلح) =====
-        async function generateScript(idea,apiKey){
-            const res = await fetch('https://api.openai.com/v1/chat/completions',{
-                method:'POST',
-                headers:{
-                    'Authorization':'Bearer '+apiKey,
-                    'Content-Type':'application/json'
-                },
-                body:JSON.stringify({
-                    model:'gpt-4o-mini',
-                    messages:[{role:'user',content:`اكتب سكريبت فيديو أطفال (2-4 سنوات) عن: ${idea}
-
-- كلمات بسيطة وتكرار
-- 3-5 مشاهد
-- وصف بصري بين [SCENE: ...]
-
-الصيغة:
-العنوان: ...
-النص: ...
-المشاهد:
-1. [SCENE: ...]
-2. [SCENE: ...]`}],
-                    temperature:0.7
-                })
-            });
-
-            const data = await res.json();
-
-            // ✅ فحص الأخطاء أولاً
-            if(!res.ok){
-                const error = new Error(data.error?.message || `HTTP ${res.status}`);
-                error.detail = `نوع الخطأ: ${data.error?.type||'unknown'}\nالرمز: ${data.error?.code||'none'}`;
-                throw error;
-            }
-
-            // ✅ فحص وجود choices
-            if(!data.choices || !data.choices[0] || !data.choices[0].message){
-                const error = new Error('رد OpenAI غير صحيح');
-                error.detail = JSON.stringify(data,null,2).substring(0,500);
-                throw error;
-            }
-
-            const content = data.choices[0].message.content;
-
-            // استخراج المشاهد
-            const scenes = [];
-            const regex = /\[SCENE:\s*(.*?)\]/g;
-            let m; while((m=regex.exec(content))!==null) scenes.push(m[1].trim());
-
-            // ✅ فحص وجود مشاهد
-            if(scenes.length === 0){
-                const error = new Error('لم يُستخرج مشاهد من السكريبت');
-                error.detail = 'السكريبت:\n'+content.substring(0,300);
-                throw error;
-            }
-
-            window.generatedScenes = scenes;
-            window.generatedScript = content;
-
-            document.getElementById('script-content').innerHTML = `
-                <pre id="script-text">${content}</pre>
-                <div style="margin-top:10px"><strong>المشاهد (${scenes.length}):</strong>
-                ${scenes.map((s,i)=>`<div style="margin:6px 0;padding:8px;background:#f7fafc;border-radius:8px;font-size:.85rem">${i+1}. ${s}</div>`).join('')}</div>`;
-            return content;
-        }
-
-        // ===== توليد الصور =====
-        async function generateImages(apiKey,provider){
-            const scenes = window.generatedScenes||[];
-            if(!scenes.length) throw new Error('لا يوجد مشاهد! ولّد السكريبت أولاً');
-
-            const container = document.getElementById('images-container');
-            container.innerHTML = '';
-            const style = "Cute 3D Pixar style, bright colors, toddler-friendly, simple background, soft lighting, high quality";
-
-            for(let i=0;i<scenes.length;i++){
-                let imageUrl;
-                
-                if(provider==='pollinations'){
-                    // ✅ مجاني - لا يحتاج مفتاح
-                    imageUrl = `https://image.pollinations.ai/prompt/${encodeURIComponent(scenes[i]+'. '+style)}?width=1024&height=576&nologo=true&seed=${Date.now()+i}&enhance=true`;
-                } else if(provider==='fal' && apiKey){
-                    const res = await fetch('https://queue.fal.run/fal-ai/flux/dev',{
-                        method:'POST',
-                        headers:{'Authorization':'Key '+apiKey,'Content-Type':'application/json'},
-                        body:JSON.stringify({prompt:scenes[i]+'. '+style,image_size:'landscape_16_9'})
-                    });
-                    if(!res.ok) throw new Error('Fal.ai error: '+res.status);
-                    const data = await res.json();
-                    imageUrl = data.images[0].url;
-                } else {
-                    // fallback مجاني
-                    imageUrl = `https://image.pollinations.ai/prompt/${encodeURIComponent(scenes[i]+'. '+style)}?width=1024&height=576&nologo=true&seed=${Date.now()+i}&enhance=true`;
-                }
-
-                const div = document.createElement('div');
-                div.style.margin = '10px 0';
-                div.innerHTML = `
-                    <div style="font-weight:600;margin-bottom:6px;font-size:.85rem">مشهد ${i+1}</div>
-                    <img src="${imageUrl}" class="image-preview" alt="مشهد ${i+1}" loading="lazy"
-                         onerror="this.onerror=null;this.src='https://via.placeholder.com/1024x576/667eea/ffffff?text=مشهد+${i+1}'">
-                    <div style="font-size:.75rem;color:#666;margin-top:4px">${scenes[i]}</div>
-                `;
-                container.appendChild(div);
-            }
-
-            document.getElementById('images-count').textContent = scenes.length;
-            return scenes.length;
-        }
-
-        // ===== توليد الصوت =====
-        async function generateVoice(apiKey){
-            const text = window.generatedScript||'';
-            if(!text) throw new Error('لا يوجد نص! ولّد السكريبت أولاً');
-
-            const cleanText = text.replace(/\[SCENE:.*?\]/g,'').substring(0,200);
-
-            if(apiKey){
-                const res = await fetch('https://api.elevenlabs.io/v1/text-to-speech/21m00Tcm4TlvDq8ikWAM',{
-                    method:'POST',
-                    headers:{'xi-api-key':apiKey,'Content-Type':'application/json'},
-                    body:JSON.stringify({text:cleanText,model_id:'eleven_turbo_v2_5'})
-                });
-                if(!res.ok) throw new Error('ElevenLabs error: '+res.status);
-                const blob = await res.blob();
-                const url = URL.createObjectURL(blob);
-                document.getElementById('voice-audio').src = url;
-                document.getElementById('voice-download').href = url;
-            } else {
-                // ✅ TTS مجاني
-                const url = `https://translate.google.com/translate_tts?ie=UTF-8&q=${encodeURIComponent(cleanText)}&tl=en-US&client=tw-ob`;
-                document.getElementById('voice-audio').src = url;
-                document.getElementById('voice-download').href = url;
-                showToast('ℹ️ استخدمت TTS مجاني');
-            }
-            return true;
-        }
-    </script>
-</body>
-</html>
 
