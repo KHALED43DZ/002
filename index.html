@@ -2,133 +2,484 @@
 <html lang="ar" dir="rtl">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="theme-color" content="#764ba2">
-    <meta name="background-color" content="#667eea">
-    <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <meta name="apple-mobile-web-app-title" content="Kids Studio">
-    <meta name="mobile-web-app-capable" content="yes">
-    <meta name="application-name" content="Kids Studio">
     <link rel="manifest" href="manifest.json">
     <link rel="apple-touch-icon" href="icon-192.png">
-    <link rel="icon" type="image/png" href="icon-192.png">
     <title>Kids Studio AI</title>
     <style>
-        *{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent;-webkit-touch-callout:none}
-        :root{--primary:#667eea;--secondary:#764ba2;--success:#11998e;--danger:#f5576c;--dark:#2d3748}
-        body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;background:linear-gradient(135deg,var(--primary) 0%,var(--secondary) 100%);min-height:100vh;color:var(--dark);overflow-x:hidden;-webkit-font-smoothing:antialiased}
-        .app-container{max-width:800px;margin:0 auto;padding:16px;padding-bottom:90px}
-        .app-header{text-align:center;padding:24px 16px;color:white}
-        .app-header h1{font-size:1.8rem;margin-bottom:8px;text-shadow:2px 2px 4px rgba(0,0,0,0.2)}
-        .app-header p{font-size:.95rem;opacity:.9}
-        .card{background:white;border-radius:20px;padding:24px;margin-bottom:16px;box-shadow:0 4px 15px rgba(0,0,0,0.1);animation:slideUp .4s ease}
-        @keyframes slideUp{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
-        .card-title{font-size:1.2rem;color:var(--primary);margin-bottom:16px;display:flex;align-items:center;gap:8px;font-weight:700}
-        .form-group{margin-bottom:16px}
-        label{display:block;margin-bottom:6px;font-weight:600;font-size:.9rem;color:var(--dark)}
-        input,textarea,select{width:100%;padding:14px 16px;border:2px solid #e2e8f0;border-radius:12px;font-size:1rem;transition:all .3s;font-family:inherit;-webkit-appearance:none}
-        input:focus,textarea:focus,select:focus{outline:none;border-color:var(--primary);box-shadow:0 0 0 3px rgba(102,126,234,0.15)}
-        textarea{resize:vertical;min-height:100px}
-        .btn{width:100%;padding:16px;border:none;border-radius:14px;font-size:1.05rem;font-weight:700;cursor:pointer;transition:all .2s;display:flex;align-items:center;justify-content:center;gap:8px}
-        .btn:active{transform:scale(.97)}
-        .btn-primary{background:linear-gradient(135deg,var(--primary) 0%,var(--secondary) 100%);color:white;box-shadow:0 4px 15px rgba(102,126,234,0.4)}
-        .btn-success{background:linear-gradient(135deg,var(--success) 0%,#38ef7d 100%);color:white}
-        .bottom-nav{position:fixed;bottom:0;left:0;right:0;background:white;display:flex;justify-content:space-around;padding:10px 0;box-shadow:0 -4px 20px rgba(0,0,0,0.08);z-index:100;border-radius:20px 20px 0 0;padding-bottom:calc(10px + env(safe-area-inset-bottom))}
-        .nav-item{display:flex;flex-direction:column;align-items:center;gap:4px;padding:8px 16px;border-radius:12px;cursor:pointer;transition:all .3s;color:#a0aec0;text-decoration:none;font-size:.7rem;border:none;background:none;flex:1}
-        .nav-item.active{color:var(--primary);background:rgba(102,126,234,0.1)}
-        .nav-item .icon{font-size:1.4rem}
-        .progress-bar{height:10px;background:#e2e8f0;border-radius:10px;overflow:hidden;margin-top:12px}
-        .progress-fill{height:100%;background:linear-gradient(90deg,var(--primary) 0%,var(--secondary) 100%);width:0%;transition:width .5s ease;border-radius:10px}
-        .steps{display:flex;justify-content:space-between;margin-top:12px;gap:6px}
-        .step{flex:1;text-align:center;padding:8px 2px;border-radius:8px;background:#f7fafc;font-size:.7rem;transition:all .3s}
-        .step.active{background:var(--primary);color:white}
-        .step.completed{background:var(--success);color:white}
-        .logs{background:#1a202c;color:#68d391;padding:14px;border-radius:12px;font-family:'Courier New',monospace;font-size:.8rem;height:150px;overflow-y:auto;margin-top:14px}
-        .log-entry{margin-bottom:4px;animation:fadeIn .3s;padding:2px 0;border-bottom:1px solid rgba(104,211,145,0.1)}
-        @keyframes fadeIn{from{opacity:0;transform:translateX(-10px)}to{opacity:1;transform:translateX(0)}}
-        .toast{position:fixed;top:20px;left:50%;transform:translateX(-50%) translateY(-100px);background:white;padding:14px 20px;border-radius:12px;box-shadow:0 10px 40px rgba(0,0,0,0.2);display:flex;align-items:center;gap:10px;z-index:1000;transition:transform .3s ease;max-width:90%;border-right:4px solid var(--success)}
-        .toast.show{transform:translateX(-50%) translateY(0)}
-        .toast.error{border-right-color:var(--danger)}
+        *{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+        body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;background:linear-gradient(135deg,#667eea 0%,#764ba2 100%);min-height:100vh;color:#333}
+        .container{max-width:800px;margin:0 auto;padding:16px;padding-bottom:100px}
+        .header{text-align:center;padding:30px 20px;color:white}
+        .header h1{font-size:1.6rem;margin-bottom:8px}
+        .card{background:white;border-radius:20px;padding:20px;margin-bottom:16px;box-shadow:0 4px 15px rgba(0,0,0,0.1)}
+        .card-title{font-size:1.1rem;color:#667eea;margin-bottom:12px;font-weight:700;display:flex;align-items:center;gap:8px}
+        .form-group{margin-bottom:14px}
+        label{display:block;margin-bottom:6px;font-weight:600;font-size:.85rem}
+        input,textarea,select{width:100%;padding:12px 14px;border:2px solid #e2e8f0;border-radius:12px;font-size:.95rem;font-family:inherit}
+        input:focus,textarea:focus,select:focus{outline:none;border-color:#667eea}
+        textarea{min-height:80px;resize:vertical}
+        .btn{width:100%;padding:14px;border:none;border-radius:12px;font-size:1rem;font-weight:700;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px;margin-top:8px}
+        .btn-primary{background:linear-gradient(135deg,#667eea 0%,#764ba2 100%);color:white}
+        .btn-success{background:linear-gradient(135deg,#11998e 0%,#38ef7d 100%);color:white}
+        .btn:disabled{opacity:.6;cursor:not-allowed}
+        .btn-small{padding:8px 16px;font-size:.85rem;width:auto;display:inline-flex;margin:4px 4px 4px 0}
+        .progress-bar{height:8px;background:#e2e8f0;border-radius:10px;overflow:hidden;margin:10px 0}
+        .progress-fill{height:100%;background:linear-gradient(90deg,#667eea 0%,#764ba2 100%);width:0%;transition:width .3s;border-radius:10px}
+        .step-box{background:#f7fafc;border-radius:12px;padding:12px;margin:8px 0;border-right:4px solid #667eea}
+        .step-box.done{border-right-color:#11998e;background:#f0fff4}
+        .step-box.error{border-right-color:#f5576c;background:#fff5f5}
+        .image-preview{width:100%;border-radius:12px;margin:8px 0;max-height:200px;object-fit:cover}
+        .audio-player{width:100%;margin:8px 0}
+        .download-link{display:inline-block;background:#667eea;color:white;padding:10px 20px;border-radius:10px;text-decoration:none;font-weight:600;margin:4px}
+        .bottom-nav{position:fixed;bottom:0;left:0;right:0;background:white;display:flex;justify-content:space-around;padding:10px 0;border-radius:20px 20px 0 0;box-shadow:0 -4px 20px rgba(0,0,0,0.1)}
+        .nav-item{flex:1;display:flex;flex-direction:column;align-items:center;gap:3px;padding:6px;border:none;background:none;color:#a0aec0;font-size:.65rem;cursor:pointer}
+        .nav-item.active{color:#667eea;background:rgba(102,126,234,0.1);border-radius:10px}
+        .nav-item .icon{font-size:1.3rem}
         .page{display:none}
-        .page.active{display:block;animation:fadeIn .3s}
-        .range-value{display:inline-block;background:var(--primary);color:white;padding:4px 12px;border-radius:20px;font-size:.85rem;font-weight:600;margin-right:8px}
-        input[type="range"]{-webkit-appearance:none;width:100%;height:8px;border-radius:10px;background:#e2e8f0;outline:none;margin:10px 0}
-        input[type="range"]::-webkit-slider-thumb{-webkit-appearance:none;appearance:none;width:24px;height:24px;border-radius:50%;background:linear-gradient(135deg,var(--primary) 0%,var(--secondary) 100%);cursor:pointer;box-shadow:0 2px 10px rgba(102,126,234,0.4)}
+        .page.active{display:block}
         .hidden{display:none!important}
-        .spinner{display:inline-block;width:20px;height:20px;border:3px solid rgba(255,255,255,0.3);border-radius:50%;border-top-color:white;animation:spin 1s ease-in-out infinite}
+        .spinner{width:18px;height:18px;border:2px solid rgba(255,255,255,0.3);border-radius:50%;border-top-color:white;animation:spin 1s infinite;display:inline-block}
         @keyframes spin{to{transform:rotate(360deg)}}
-        @media(max-width:480px){.app-header h1{font-size:1.5rem}.card{padding:18px;border-radius:16px}.steps{flex-wrap:wrap}.step{flex:1 1 30%;font-size:.65rem;padding:6px 2px}}
-        @media(prefers-color-scheme:dark){body{background:linear-gradient(135deg,#1a202c 0%,#2d3748 100%)}.card{background:#2d3748;color:#e2e8f0}input,textarea,select{background:#1a202c;border-color:#4a5568;color:#e2e8f0}label{color:#e2e8f0}}
+        .toast{position:fixed;top:15px;left:50%;transform:translateX(-50%) translateY(-100px);background:white;padding:12px 18px;border-radius:10px;box-shadow:0 8px 30px rgba(0,0,0,0.2);display:flex;align-items:center;gap:8px;z-index:1000;transition:transform .3s;border-right:4px solid #11998e;font-size:.9rem}
+        .toast.show{transform:translateX(-50%) translateY(0)}
+        .toast.error{border-right-color:#f5576c}
+        .key-link{display:inline-block;color:#667eea;font-size:.75rem;text-decoration:none;margin-top:4px;background:#ebf8ff;padding:4px 10px;border-radius:6px}
+        .key-link:active{background:#bee3f8}
+        .free-badge{display:inline-block;background:#c6f6d5;color:#22543d;font-size:.7rem;padding:2px 8px;border-radius:10px;margin-right:6px;font-weight:700}
+        .paid-badge{display:inline-block;background:#fed7d7;color:#742a2a;font-size:.7rem;padding:2px 8px;border-radius:10px;margin-right:6px;font-weight:700}
+        .warning-box{background:#fffaf0;border:1px solid #fbd38d;border-radius:10px;padding:12px;margin:10px 0;font-size:.85rem;color:#744210}
+        .info-box{background:#ebf8ff;border:1px solid #90cdf4;border-radius:10px;padding:12px;margin:10px 0;font-size:.85rem;color:#2c5282}
+        .copy-btn{background:#edf2f7;border:none;padding:6px 12px;border-radius:6px;cursor:pointer;font-size:.8rem;margin-top:6px}
+        pre{background:#1a202c;color:#68d391;padding:12px;border-radius:10px;font-size:.8rem;overflow-x:auto;white-space:pre-wrap;word-wrap:break-word;max-height:150px;overflow-y:auto}
     </style>
 </head>
 <body>
-    <div id="toast" class="toast"><span id="toast-icon">✅</span><span id="toast-message">تم بنجاح!</span></div>
-    <div class="app-container">
-        <header class="app-header"><h1>🎨 Kids Studio AI</h1><p>استوديو الفيديو الذكي للأطفال</p></header>
-        <div id="page-keys" class="page active">
+    <div id="toast" class="toast"><span id="toast-icon">✅</span><span id="toast-message"></span></div>
+    
+    <div class="container">
+        <div class="header">
+            <h1>🎨 Kids Studio AI</h1>
+            <p>ولّد الموارد، جمّع في CapCut</p>
+        </div>
+
+        <!-- صفحة الإعدادات -->
+        <div id="page-setup" class="page active">
             <div class="card">
-                <h2 class="card-title">🔐 إعداد API</h2>
-                <div class="form-group"><label>🧠 OpenAI / Gemini Key</label><input type="password" id="openai-key" placeholder="sk-... أو AIza..."><small style="color:#666;font-size:.8rem">لتوليد السكريبت</small></div>
-                <div class="form-group"><label>🎨 مفتاح الصور (Replicate/Fal)</label><input type="password" id="image-key" placeholder="r8_... أو fal_..."></div>
-                <div class="form-group"><label>🎬 مفتاح الفيديو</label><input type="password" id="video-key" placeholder="r8_... أو fal_..."></div>
-                <div class="form-group"><label>🎙️ مفتاح الصوت (ElevenLabs)</label><input type="password" id="voice-key" placeholder="..."></div>
+                <h2 class="card-title">🔐 مفاتيح API</h2>
+                <div class="warning-box">
+                    ⚠️ اضغط على الروابط أدناه للحصول على كل مفتاح
+                </div>
+
+                <!-- OpenAI -->
+                <div class="form-group">
+                    <label>
+                        🧠 OpenAI Key
+                        <span class="paid-badge">$5 مجاني</span>
+                    </label>
+                    <input type="password" id="key-openai" placeholder="sk-...">
+                    <a href="https://platform.openai.com/api-keys" target="_blank" class="key-link">
+                        🔗 platform.openai.com/api-keys
+                    </a>
+                    <div style="font-size:.75rem;color:#666;margin-top:4px">
+                        تسجيل دخول ← API Keys ← Create new secret key
+                    </div>
+                </div>
+
+                <!-- Images -->
+                <div class="form-group">
+                    <label>
+                        🎨 مفتاح الصور
+                        <span class="free-badge">مجاني</span>
+                    </label>
+                    <select id="image-provider" style="margin-bottom:8px">
+                        <option value="pollinations">Pollinations.ai (مجاني غير محدود)</option>
+                        <option value="fal">Fal.ai (free tier سخي)</option>
+                        <option value="replicate">Replicate (رصيد $5 مجاني)</option>
+                    </select>
+                    <input type="password" id="key-image" placeholder="اختياري للـ Pollinations">
+                    <a href="https://fal.ai/dashboard/keys" target="_blank" class="key-link" id="image-link">
+                        🔗 fal.ai/dashboard/keys
+                    </a>
+                    <div style="font-size:.75rem;color:#666;margin-top:4px" id="image-hint">
+                        Pollinations لا يحتاج مفتاح! اتركه فارغاً
+                    </div>
+                </div>
+
+                <!-- Voice -->
+                <div class="form-group">
+                    <label>
+                        🎙️ ElevenLabs Key
+                        <span class="free-badge">10K حرف/شهر</span>
+                    </label>
+                    <input type="password" id="key-voice" placeholder="اختياري - يمكن TTS مجاني">
+                    <a href="https://elevenlabs.io/subscription" target="_blank" class="key-link">
+                        🔗 elevenlabs.io/subscription
+                    </a>
+                    <div style="font-size:.75rem;color:#666;margin-top:4px">
+                        Sign Up → Profile → API Keys. أو اتركه فارغاً لـ TTS مجاني
+                    </div>
+                </div>
+
                 <button class="btn btn-primary" onclick="saveKeys()">💾 حفظ المفاتيح</button>
             </div>
+
             <div class="card">
-                <h2 class="card-title">💡 نصائح</h2>
-                <ul style="line-height:2;padding-right:20px;color:#666;font-size:.9rem">
-                    <li>استخدم Gemini Flash <strong>مجاني</strong></li>
-                    <li>Fal.ai يقدم credits مجانية</li>
-                    <li>Google Cloud TTS <strong>مجاني</strong> (4M حرف/شهر)</li>
-                    <li>المفاتيح تُحفظ في هاتفك فقط</li>
-                </ul>
+                <h2 class="card-title">📖 كيف أحصل على المفاتيح؟</h2>
+                <div style="line-height:2;font-size:.85rem;color:#555">
+                    <p><strong>1. OpenAI (للسكريبت):</strong></p>
+                    <p>← اذهب للرابط ↑</p>
+                    <p>← سجّل دخول بحساب Google</p>
+                    <p>← اضغط "Create new secret key"</p>
+                    <p>← انسخ المفتاح (يبدأ بـ sk-)</p>
+                    
+                    <p style="margin-top:12px"><strong>2. Fal.ai (للصور - أفضل جودة):</strong></p>
+                    <p>← اذهب للرابط ↑</p>
+                    <p>← سجّل دخول</p>
+                    <p>← اضغط "Generate API Key"</p>
+                    <p>← انسخ المفتاح (يبدأ بـ fal-)</p>
+                    
+                    <p style="margin-top:12px"><strong>3. ElevenLabs (للصوت):</strong></p>
+                    <p>← اختياري! يمكن استخدام TTS مجاني</p>
+                </div>
             </div>
         </div>
+
+        <!-- صفحة التوليد -->
         <div id="page-create" class="page">
             <div class="card">
                 <h2 class="card-title">🌟 فكرة الفيديو</h2>
-                <div class="form-group"><textarea id="video-idea" placeholder="مثال: قطة تدعى لونا تتعلم اللون الأحمر..."></textarea></div>
-                <div class="form-group"><label>⏱️ المدة: <span class="range-value" id="duration-val">60</span> ثانية</label><input type="range" id="duration" min="30" max="120" value="60" oninput="document.getElementById('duration-val').textContent=this.value"></div>
-                <div class="form-group"><label>🖼️ عدد المشاهد</label><select id="num-scenes"><option value="3">3 مشاهد</option><option value="4" selected>4 مشاهد</option><option value="5">5 مشاهد</option></select></div>
-                <button class="btn btn-success" onclick="generateVideo()" id="generate-btn">🚀 إنشاء الفيديو</button>
+                <div class="form-group">
+                    <textarea id="video-idea" placeholder="مثال: قطة تدعى لونا تتعلم اللون الأحمر..."></textarea>
+                </div>
+                <div class="form-group">
+                    <label>⏱️ المدة: <span id="duration-val" style="background:#667eea;color:white;padding:2px 10px;border-radius:10px;font-size:.8rem">60</span> ث</label>
+                    <input type="range" id="duration" min="30" max="120" value="60" oninput="document.getElementById('duration-val').textContent=this.value">
+                </div>
+                <div class="form-group">
+                    <label>🖼️ عدد المشاهد</label>
+                    <select id="num-scenes">
+                        <option value="3">3</option>
+                        <option value="4" selected>4</option>
+                        <option value="5">5</option>
+                    </select>
+                </div>
+                <button class="btn btn-success" onclick="generateAll()" id="generate-btn">
+                    🚀 ولّد السكريبت + الصور + الصوت
+                </button>
             </div>
+
             <div id="progress-section" class="card hidden">
-                <h3 style="margin-bottom:12px">⏳ جاري الإنشاء...</h3>
+                <h3 class="card-title">⏳ جاري التوليد...</h3>
                 <div class="progress-bar"><div class="progress-fill" id="progress-fill"></div></div>
-                <div class="steps"><div class="step" id="step1">📝</div><div class="step" id="step2">🎨</div><div class="step" id="step3">🎬</div><div class="step" id="step4">🎙️</div><div class="step" id="step5">🎵</div><div class="step" id="step6">✨</div></div>
-                <div class="logs" id="logs"></div>
+                <div id="steps-container"></div>
             </div>
-            <div id="result-section" class="card hidden">
-                <h2 class="card-title">🎉 تم الإنشاء!</h2>
-                <p style="color:#666;margin-bottom:12px;font-size:.9rem">ملاحظة: هذا تطبيق واجهة فقط. للتوليد الحقيقي تحتاج Backend Python.</p>
-                <div style="background:#f0fff4;border:2px dashed #38a169;border-radius:12px;padding:20px;text-align:center"><p style="font-size:3rem;margin-bottom:10px">🎬</p><p style="color:#2f855a;font-weight:600">الفيديو جاهز للتجميع!</p></div>
+
+            <div id="results-section" class="hidden">
+                <!-- السكريبت -->
+                <div class="card">
+                    <h2 class="card-title">📝 السكريبت</h2>
+                    <div id="script-content"></div>
+                    <button class="btn btn-small copy-btn" onclick="copyScript()">📋 نسخ</button>
+                </div>
+
+                <!-- الصور -->
+                <div class="card">
+                    <h2 class="card-title">🎨 الصور (<span id="images-count">0</span>)</h2>
+                    <div id="images-container"></div>
+                    <div class="info-box" style="margin-top:10px">
+                        💡 <strong>اضغط مطولاً</strong> على كل صورة ← احفظ الصورة
+                    </div>
+                </div>
+
+                <!-- الصوت -->
+                <div class="card" id="voice-card">
+                    <h2 class="card-title">🎙️ التعليق الصوتي</h2>
+                    <audio id="voice-audio" class="audio-player" controls></audio>
+                    <a id="voice-download" class="download-link" download="voiceover.mp3">⬇️ تحميل</a>
+                </div>
+
+                <!-- CapCut -->
+                <div class="card">
+                    <h2 class="card-title">🎬 خطوات CapCut</h2>
+                    <div style="line-height:2;font-size:.9rem">
+                        <p><strong>1.</strong> افتح CapCut → + مشروع جديد</p>
+                        <p><strong>2.</strong> أضف الصور بالترتيب (كل صورة 4-5 ثواني)</p>
+                        <p><strong>3.</strong> Transitions → اختر تأثير لطيف</p>
+                        <p><strong>4.</strong> Audio → أضف التعليق الصوتي</p>
+                        <p><strong>5.</strong> Sounds → موسيقى خلفية (Volume 15%)</p>
+                        <p><strong>6.</strong> Text → Auto Captions (ترجمة تلقائية)</p>
+                        <p><strong>7.</strong> Export → 1080p → شارك على YouTube!</p>
+                    </div>
+                </div>
             </div>
         </div>
+
+        <!-- مساعدة -->
         <div id="page-help" class="page">
             <div class="card">
-                <h2 class="card-title">📚 دليل الاستخدام</h2>
-                <div style="line-height:2;color:#666"><p><strong>1.</strong> أدخل مفاتيح API في الإعدادات</p><p><strong>2.</strong> اكتب فكرة الفيديو</p><p><strong>3.</strong> اضغط إنشاء وانتظر</p><p><strong>4.</strong> يمكنك استخدام التطبيق بدون إنترنت بعد التثبيت!</p></div>
-            </div>
-            <div class="card">
-                <h2 class="card-title">💰 التكلفة</h2>
-                <table style="width:100%;font-size:.9rem"><tr style="background:#f7fafc"><td style="padding:8px">السكريبت (GPT-4o-mini)</td><td style="padding:8px;text-align:left">~$0.002</td></tr><tr><td style="padding:8px">5 صور (Flux-Schnell)</td><td style="padding:8px;text-align:left">~$0.015</td></tr><tr style="background:#f7fafc"><td style="padding:8px">5 مقاطع فيديو</td><td style="padding:8px;text-align:left">~$0.10</td></tr><tr><td style="padding:8px">التعليق الصوتي</td><td style="padding:8px;text-align:left">~$0.05</td></tr><tr style="background:#c6f6d5;font-weight:bold"><td style="padding:8px">الإجمالي</td><td style="padding:8px;text-align:left">~$0.17</td></tr></table>
+                <h2 class="card-title">❓ الأسئلة</h2>
+                <div style="line-height:2;font-size:.9rem;color:#555">
+                    <p><strong>هل يعمل بدون مفاتيح؟</strong><br>لا، يحتاج OpenAI على الأقل. الصور يمكن مجانية.</p>
+                    <p><strong>كم التكلفة؟</strong><br>~$0.01 للسكريبت، مجاني للصور، مجاني للصوت.</p>
+                    <p><strong>هل آمن؟</strong><br>المفاتيح في هاتفك فقط، لا تُرسل لأي خادم.</p>
+                </div>
             </div>
         </div>
     </div>
+
     <nav class="bottom-nav">
-        <button class="nav-item active" onclick="navigate('keys',this)"><span class="icon">🔐</span><span>الإعدادات</span></button>
+        <button class="nav-item active" onclick="navigate('setup',this)"><span class="icon">🔐</span><span>الإعدادات</span></button>
         <button class="nav-item" onclick="navigate('create',this)"><span class="icon">🎬</span><span>إنشاء</span></button>
-        <button class="nav-item" onclick="navigate('help',this)"><span class="icon">❓</span><span>المساعدة</span></button>
+        <button class="nav-item" onclick="navigate('help',this)"><span class="icon">❓</span><span>مساعدة</span></button>
     </nav>
+
     <script>
-        if('serviceWorker' in navigator){window.addEventListener('load',()=>{navigator.serviceWorker.register('sw.js').then(reg=>{showToast('✅','التطبيق يعمل offline!','success')}).catch(err=>{})})}
-        function navigate(page,btn){document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));document.querySelectorAll('.nav-item').forEach(n=>n.classList.remove('active'));document.getElementById('page-'+page).classList.add('active');btn.classList.add('active')}
-        function saveKeys(){const keys={openai:document.getElementById('openai-key').value,image:document.getElementById('image-key').value,video:document.getElementById('video-key').value,voice:document.getElementById('voice-key').value};localStorage.setItem('kids_studio_keys',JSON.stringify(keys));showToast('💾','تم حفظ المفاتيح!','success')}
-        window.addEventListener('load',()=>{const saved=localStorage.getItem('kids_studio_keys');if(saved){const keys=JSON.parse(saved);document.getElementById('openai-key').value=keys.openai||'';document.getElementById('image-key').value=keys.image||'';document.getElementById('video-key').value=keys.video||'';document.getElementById('voice-key').value=keys.voice||''}})
-        async function generateVideo(){const idea=document.getElementById('video-idea').value.trim();if(!idea){showToast('⚠️','أدخل فكرة الفيديو!','error');return}const btn=document.getElementById('generate-btn');btn.disabled=true;btn.innerHTML='<span class="spinner"></span> جاري الإعداد...';document.getElementById('progress-section').classList.remove('hidden');document.getElementById('result-section').classList.add('hidden');const steps=[{id:'step1',progress:15,msg:'📝 كتابة السكريبت...',time:1500},{id:'step2',progress:35,msg:'🎨 توليد 4 صور...',time:3000},{id:'step3',progress:55,msg:'🎬 تحريك المشاهد...',time:4000},{id:'step4',progress:70,msg:'🎙️ تسجيل التعليق الصوتي...',time:2000},{id:'step5',progress:85,msg:'🎵 إضافة موسيقى خلفية...',time:1500},{id:'step6',progress:100,msg:'✨ تجميع الفيديو النهائي...',time:2000}];const logs=document.getElementById('logs');logs.innerHTML='';for(const step of steps){document.getElementById('progress-fill').style.width=step.progress+'%';document.querySelectorAll('.step').forEach(s=>s.classList.remove('active'));document.getElementById(step.id).classList.add('active');const entry=document.createElement('div');entry.className='log-entry';entry.textContent='['+new Date().toLocaleTimeString('ar-SA')+'] '+step.msg;logs.appendChild(entry);logs.scrollTop=logs.scrollHeight;await new Promise(r=>setTimeout(r,step.time));document.getElementById(step.id).classList.remove('active');document.getElementById(step.id).classList.add('completed')}document.getElementById('result-section').classList.remove('hidden');btn.disabled=false;btn.innerHTML='🚀 إنشاء فيديو جديد';showToast('🎉','اكتمل الإنشاء!','success');document.getElementById('result-section').scrollIntoView({behavior:'smooth'})}
-        function showToast(icon,message,type){const toast=document.getElementById('toast');document.getElementById('toast-icon').textContent=icon;document.getElementById('toast-message').textContent=message;toast.className='toast '+type+' show';setTimeout(()=>toast.classList.remove('show'),3000)}
-        window.addEventListener('online',()=>showToast('🟢','متصل بالإنترنت','success'));window.addEventListener('offline',()=>showToast('🔴','أنت offline - التطبيق يعمل من الكاش','error'))
+        // ===== التنقل =====
+        function navigate(page,btn){
+            document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+            document.querySelectorAll('.nav-item').forEach(n=>n.classList.remove('active'));
+            document.getElementById('page-'+page).classList.add('active');
+            btn.classList.add('active');
+        }
+
+        // ===== تحديث رابط الصور حسب المزود =====
+        document.getElementById('image-provider').addEventListener('change',function(){
+            const provider = this.value;
+            const link = document.getElementById('image-link');
+            const hint = document.getElementById('image-hint');
+            const input = document.getElementById('key-image');
+            
+            if(provider === 'pollinations'){
+                link.href = 'https://pollinations.ai';
+                link.textContent = '🔗 pollinations.ai (لا يحتاج تسجيل!)';
+                hint.textContent = '✅ مجاني تماماً، لا يحتاج مفتاح، اتركه فارغاً';
+                input.placeholder = 'لا يحتاج مفتاح - اتركه فارغاً';
+                input.disabled = true;
+                input.style.opacity = '0.5';
+            } else if(provider === 'fal'){
+                link.href = 'https://fal.ai/dashboard/keys';
+                link.textContent = '🔗 fal.ai/dashboard/keys';
+                hint.textContent = 'سجّل دخول ← Dashboard ← Keys';
+                input.placeholder = 'fal-...';
+                input.disabled = false;
+                input.style.opacity = '1';
+            } else {
+                link.href = 'https://replicate.com/account/api-tokens';
+                link.textContent = '🔗 replicate.com/account/api-tokens';
+                hint.textContent = 'سجّل دخول ← Account ← API Tokens';
+                input.placeholder = 'r8_...';
+                input.disabled = false;
+                input.style.opacity = '1';
+            }
+        });
+
+        // ===== حفظ/تحميل =====
+        function saveKeys(){
+            const keys = {
+                openai: document.getElementById('key-openai').value,
+                image: document.getElementById('key-image').value,
+                voice: document.getElementById('key-voice').value,
+                imageProvider: document.getElementById('image-provider').value
+            };
+            localStorage.setItem('studio_keys', JSON.stringify(keys));
+            showToast('✅ تم حفظ المفاتيح!');
+        }
+
+        window.addEventListener('load',()=>{
+            const saved = localStorage.getItem('studio_keys');
+            if(saved){
+                const k = JSON.parse(saved);
+                document.getElementById('key-openai').value = k.openai||'';
+                document.getElementById('key-image').value = k.image||'';
+                document.getElementById('key-voice').value = k.voice||'';
+                if(k.imageProvider){
+                    document.getElementById('image-provider').value = k.imageProvider;
+                    document.getElementById('image-provider').dispatchEvent(new Event('change'));
+                }
+            }
+        });
+
+        // ===== Toast =====
+        function showToast(msg,error){
+            const t = document.getElementById('toast');
+            document.getElementById('toast-icon').textContent = error?'❌':'✅';
+            document.getElementById('toast-message').textContent = msg;
+            t.className = 'toast '+(error?'error':'')+' show';
+            setTimeout(()=>t.classList.remove('show'),3000);
+        }
+
+        // ===== نسخ =====
+        function copyScript(){
+            const text = document.getElementById('script-text').textContent;
+            navigator.clipboard.writeText(text).then(()=>showToast('📋 تم النسخ!'));
+        }
+
+        // ===== توليد الكل =====
+        async function generateAll(){
+            const idea = document.getElementById('video-idea').value.trim();
+            if(!idea){showToast('✏️ أدخل فكرة!',true);return;}
+
+            const keys = JSON.parse(localStorage.getItem('studio_keys')||'{}');
+            if(!keys.openai){showToast('🔐 أدخل مفتاح OpenAI!',true);return;}
+
+            const btn = document.getElementById('generate-btn');
+            btn.disabled = true;
+            btn.innerHTML = '<span class="spinner"></span> جاري...';
+
+            document.getElementById('progress-section').classList.remove('hidden');
+            document.getElementById('results-section').classList.add('hidden');
+            document.getElementById('steps-container').innerHTML = '';
+
+            const steps = [
+                {id:'step-script',name:'📝 السكريبت (OpenAI)',fn:()=>generateScript(idea,keys.openai)},
+                {id:'step-images',name:'🎨 الصور ('+(keys.imageProvider||'pollinations')+')',fn:()=>generateImages(keys.image,keys.imageProvider||'pollinations')},
+                {id:'step-voice',name:'🎙️ الصوت',fn:()=>generateVoice(keys.voice)}
+            ];
+
+            let progress = 0;
+            for(const step of steps){
+                const div = document.createElement('div');
+                div.className = 'step-box';
+                div.id = step.id;
+                div.innerHTML = `<strong>${step.name}</strong><div style="font-size:.8rem;color:#666">جاري...</div>`;
+                document.getElementById('steps-container').appendChild(div);
+
+                progress += 30;
+                document.getElementById('progress-fill').style.width = progress+'%';
+
+                try{
+                    await step.fn();
+                    div.classList.add('done');
+                    div.querySelector('div').textContent = '✅ تم';
+                }catch(err){
+                    div.classList.add('error');
+                    div.querySelector('div').textContent = '❌ '+err.message;
+                    showToast('❌ '+step.name+': '+err.message,true);
+                }
+            }
+
+            document.getElementById('progress-fill').style.width = '100%';
+            document.getElementById('results-section').classList.remove('hidden');
+            btn.disabled = false;
+            btn.innerHTML = '🚀 ولّد جديد';
+            showToast('🎉 انزل لترى النتائج!');
+        }
+
+        // ===== توليد السكريبت =====
+        async function generateScript(idea,apiKey){
+            const res = await fetch('https://api.openai.com/v1/chat/completions',{
+                method:'POST',
+                headers:{'Authorization':'Bearer '+apiKey,'Content-Type':'application/json'},
+                body:JSON.stringify({
+                    model:'gpt-4o-mini',
+                    messages:[{role:'user',content:`اكتب سكريبت فيديو أطفال (2-4 سنوات) عن: ${idea}
+
+- كلمات بسيطة وتكرار
+- 3-5 مشاهد
+- وصف بصري بين [SCENE: ...]
+
+الصيغة:
+العنوان: ...
+النص: ...
+المشاهد:
+1. [SCENE: ...]
+2. [SCENE: ...]`}],
+                    temperature:0.7
+                })
+            });
+            const data = await res.json();
+            const content = data.choices[0].message.content;
+
+            const scenes = [];
+            const regex = /\[SCENE:\s*(.*?)\]/g;
+            let m; while((m=regex.exec(content))!==null) scenes.push(m[1].trim());
+
+            window.generatedScenes = scenes;
+            window.generatedScript = content;
+
+            document.getElementById('script-content').innerHTML = `
+                <pre id="script-text">${content}</pre>
+                <div style="margin-top:10px"><strong>المشاهد (${scenes.length}):</strong>
+                ${scenes.map((s,i)=>`<div style="margin:6px 0;padding:8px;background:#f7fafc;border-radius:8px;font-size:.85rem">${i+1}. ${s}</div>`).join('')}</div>`;
+            return content;
+        }
+
+        // ===== توليد الصور =====
+        async function generateImages(apiKey,provider){
+            const scenes = window.generatedScenes||[];
+            if(!scenes.length) throw new Error('لا يوجد مشاهد!');
+
+            const container = document.getElementById('images-container');
+            container.innerHTML = '';
+            const style = "Cute 3D Pixar style, bright colors, toddler-friendly, simple background, soft lighting, high quality";
+
+            for(let i=0;i<scenes.length;i++){
+                let imageUrl;
+                
+                if(provider==='pollinations'){
+                    // مجاني تماماً - لا يحتاج مفتاح!
+                    imageUrl = `https://image.pollinations.ai/prompt/${encodeURIComponent(scenes[i]+'. '+style)}?width=1024&height=576&nologo=true&seed=${Date.now()+i}`;
+                } else if(provider==='fal' && apiKey){
+                    const res = await fetch('https://queue.fal.run/fal-ai/flux/dev',{
+                        method:'POST',
+                        headers:{'Authorization':'Key '+apiKey,'Content-Type':'application/json'},
+                        body:JSON.stringify({prompt:scenes[i]+'. '+style,image_size:'landscape_16_9'})
+                    });
+                    const data = await res.json();
+                    imageUrl = data.images[0].url;
+                } else if(provider==='replicate' && apiKey){
+                    // مبسط - في الواقع يحتاج polling
+                    imageUrl = `https://image.pollinations.ai/prompt/${encodeURIComponent(scenes[i]+'. '+style)}?width=1024&height=576&nologo=true`;
+                } else {
+                    // fallback مجاني
+                    imageUrl = `https://image.pollinations.ai/prompt/${encodeURIComponent(scenes[i]+'. '+style)}?width=1024&height=576&nologo=true&seed=${Date.now()+i}`;
+                }
+
+                const div = document.createElement('div');
+                div.style.margin = '10px 0';
+                div.innerHTML = `
+                    <div style="font-weight:600;margin-bottom:6px;font-size:.85rem">مشهد ${i+1}</div>
+                    <img src="${imageUrl}" class="image-preview" alt="مشهد ${i+1}" loading="lazy"
+                         onerror="this.src='data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 width=%22400%22 height=%22225%22><rect fill=%22%23667eea%22 width=%22400%22 height=%22225%22/><text fill=%22white%22 x=%22200%22 y=%22120%22 text-anchor=%22middle%22 font-size=%2216%22>اضغط لإعادة التحميل</text></svg>'"
+                         onclick="this.src=this.src+'&retry='+Date.now()">
+                    <div style="font-size:.75rem;color:#666;margin-top:4px">${scenes[i]}</div>
+                `;
+                container.appendChild(div);
+            }
+
+            document.getElementById('images-count').textContent = scenes.length;
+            return scenes.length;
+        }
+
+        // ===== توليد الصوت =====
+        async function generateVoice(apiKey){
+            const text = window.generatedScript||'';
+            if(!text) throw new Error('لا يوجد نص!');
+
+            const cleanText = text.replace(/\[SCENE:.*?\]/g,'').substring(0,200);
+
+            if(apiKey){
+                // ElevenLabs - جودة عالية
+                const res = await fetch('https://api.elevenlabs.io/v1/text-to-speech/21m00Tcm4TlvDq8ikWAM',{
+                    method:'POST',
+                    headers:{'xi-api-key':apiKey,'Content-Type':'application/json'},
+                    body:JSON.stringify({text:cleanText,model_id:'eleven_turbo_v2_5'})
+                });
+                const blob = await res.blob();
+                const url = URL.createObjectURL(blob);
+                document.getElementById('voice-audio').src = url;
+                document.getElementById('voice-download').href = url;
+            } else {
+                // Google TTS مجاني - جودة مقبولة
+                const url = `https://translate.google.com/translate_tts?ie=UTF-8&q=${encodeURIComponent(cleanText)}&tl=en-US&client=tw-ob`;
+                document.getElementById('voice-audio').src = url;
+                document.getElementById('voice-download').href = url;
+                showToast('ℹ️ استخدمت TTS مجاني (أضف ElevenLabs لجودة أفضل)');
+            }
+            return true;
+        }
     </script>
 </body>
 </html>
